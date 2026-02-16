@@ -1,0 +1,35 @@
+The purpose of this web scraper is to automatically collect the latest news headlines from a public news website and save them into a text file for easy access and future use. Instead of manually visiting the website
+and copying headlines, the program uses Python tools to fetch the webpage, extract the important headline text, and store it in a structured format. This helps automate data collection, making it faster, more efficient
+, and useful for tasks like analysis, reporting, or tracking news updates.
+
+
+code:
+import requests
+from bs4 import BeautifulSoup
+
+try:
+    # News website URL
+    url = "https://www.bbc.com/news"
+
+    # Send request
+    response = requests.get(url)
+    response.raise_for_status()   # Check for errors
+
+    # Parse HTML
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Extract headlines
+    headlines = soup.find_all("h2")
+
+    # Save to file
+    with open("headlines.txt", "w", encoding="utf-8") as file:
+        for headline in headlines:
+            text = headline.get_text().strip()
+            if text:
+                print(text)
+                file.write(text + "\n")
+
+    print("\nHeadlines saved in headlines.txt")
+
+except Exception as e:
+    print("Error:", e)
